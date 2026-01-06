@@ -1,0 +1,27 @@
+name: despliegue de sitio web estático en S3 de AWS - Johanna Guamán
+
+on:
+   push:
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-lastest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secret.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-session-token: ${{secre  ts.AWS_SESSION_TOKEN}}
+          aws-region: ${{env.AWS_REGION}}
+
+      - name: Deploy to AWS S3
+        run: aws s3 cp ./index.html s3://isa25johannactions
+
